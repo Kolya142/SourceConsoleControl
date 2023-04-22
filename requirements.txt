@@ -1,0 +1,8 @@
+aiohttp==3.8.4
+pyTelegramBotAPI~=4.11.0
+keyboard==0.13.5
+pip==23.1.1
+requests==2.28.2
+setuptools==67.7.1
+urllib3==1.26.15
+wheel==0.40.0
