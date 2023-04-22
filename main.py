@@ -4,7 +4,7 @@ import time
 import keyboard
 import telebot
 
-builted = False
+builted = True
 
 # настройка :
 # bind f2 "exec scc"
@@ -14,8 +14,11 @@ class SourceConsoleControl :
     def __init__(self) :
         if builted:
             with open("tg") as f:
-                self.bot = telebot.TeleBot(f.read())
-        self.bot = telebot.TeleBot("ТГ_БОТ_КЛЮЧ")
+                #print(f.readline())
+                #exit()
+                self.bot = telebot.TeleBot(f.readline())
+        else:
+            self.bot = telebot.TeleBot("ТГ_БОТ_КЛЮЧ")
         self.menu = False
         self.pressed_menu = False  # зажатая клавиша (не менять)
         self.portal_path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Portal 2\\portal2"  # путь до игры
