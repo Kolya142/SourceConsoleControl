@@ -4,6 +4,7 @@ import time
 import keyboard
 import telebot
 
+builted = False
 
 # настройка :
 # bind f2 "exec scc"
@@ -11,6 +12,9 @@ import telebot
 # не менять
 class SourceConsoleControl :
     def __init__(self) :
+        if builted:
+            with open("tg") as f:
+                self.bot = telebot.TeleBot(f.read())
         self.bot = telebot.TeleBot("ТГ_БОТ_КЛЮЧ")
         self.menu = False
         self.pressed_menu = False  # зажатая клавиша (не менять)
