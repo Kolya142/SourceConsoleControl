@@ -1,10 +1,12 @@
 import asyncio
+import os
+import sys
 import time
 
 import keyboard
 import telebot
 
-builted = True
+builted = False
 
 # настройка :
 # bind f2 "exec scc"
@@ -20,6 +22,8 @@ class SourceConsoleControl :
         else:
             self.bot = telebot.TeleBot("ТГ_БОТ_КЛЮЧ")
         self.menu = False
+        self.autostart = (True, "portal2.exe", "-dev +developer 2") # запускать при старте
+        self.ok = "esc"
         self.pressed_menu = False  # зажатая клавиша (не менять)
         self.portal_path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Portal 2\\portal2"  # путь до игры
 
@@ -81,6 +85,18 @@ def menu_logger(x) :
         else :
             print("меню закрыто")
         scc.pressed_menu = True
+        scc.ok = "esc"
+
+def menu_logger0(x) :
+    if not scc.pressed_menu :
+        if not scc.ok == "esc":
+            scc.menu = not scc.menu
+            if scc.menu :
+                print("меню открыто")
+            else :
+                print("меню закрыто")
+            scc.pressed_menu = True
+        scc.ok = '~'
 
 
 def menu_logger1(x) :
@@ -88,6 +104,22 @@ def menu_logger1(x) :
 
 
 if __name__=='__main__' :
+    if scc.autostart[0]:
+        gt = '"' + '/'.join(scc.portal_path.replace("\\", "/").split('/')[:-1]) + '/' + scc.autostart[1] + '"' + ' ' + scc.autostart[2]
+        print(gt)
+        sss = ""
+        if os.name != "nt":
+            sss = "c.sh"
+        else:
+            sss = "c.bat"
+        with open(sss, 'w') as f:
+            f.write(gt)
+        if os.name != "nt":
+            os.system("xterm -e c.sh &")
+        else:
+            os.system("start c.bat")
     keyboard.on_press_key("esc",menu_logger)
     keyboard.on_release_key("esc",menu_logger1)
+    keyboard.on_press_key("`",menu_logger0)
+    keyboard.on_release_key("`",menu_logger1)
     asyncio.run(scc.bot.polling())
