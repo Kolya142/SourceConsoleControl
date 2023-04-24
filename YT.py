@@ -3,10 +3,9 @@ import os
 import sys
 import time
 
+# pip install pytchat
+import pytchat
 import keyboard
-import telebot
-
-builted = False
 
 # настройка :
 # bind f2 "exec scc"
@@ -14,13 +13,7 @@ builted = False
 # не менять
 class SourceConsoleControl :
     def __init__(self) :
-        if builted:
-            with open("tg") as f:
-                #print(f.readline())
-                #exit()
-                self.bot = telebot.TeleBot(f.readline())
-        else:
-            self.bot = telebot.TeleBot("6168346014:AAHnrOUzx0gkrD1bvujCh27_8YKgclXWhx4")
+        self.chat = pytchat.create(video_id="oezd4d-ApMk")
         self.menu = False
         self.autostart = (True, "portal2.exe", "-dev +developer 2") # запускать при старте
         self.ok = "esc"
@@ -67,16 +60,6 @@ class SourceConsoleControl :
 scc = SourceConsoleControl()
 
 
-@scc.bot.message_handler(commands = ['help','start'])
-def send_welcome(message) :
-    scc.bot.reply_to(message,"бот включен")
-
-
-@scc.bot.message_handler(func = lambda message : True)
-def message(message) :
-    scc.main(message.text)
-
-
 def menu_logger(x) :
     if not scc.pressed_menu :
         scc.menu = not scc.menu
@@ -103,6 +86,7 @@ def menu_logger1(x) :
     scc.pressed_menu = False
 
 
+
 if __name__=='__main__' :
     if scc.autostart[0]:
         gt = '"' + '/'.join(scc.portal_path.replace("\\", "/").split('/')[:-1]) + '/' + scc.autostart[1] + '"' + ' ' + scc.autostart[2]
@@ -122,4 +106,7 @@ if __name__=='__main__' :
     keyboard.on_release_key("esc",menu_logger1)
     keyboard.on_press_key("`",menu_logger0)
     keyboard.on_release_key("`",menu_logger1)
-    asyncio.run(scc.bot.polling())
+    while True:
+        while scc.chat.is_alive() :
+            for c in scc.chat.get().sync_items() :
+                scc.main(c.message)
