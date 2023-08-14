@@ -20,7 +20,7 @@ class SourceConsoleControl :
                 #exit()
                 self.bot = telebot.TeleBot(f.readline())
         else:
-            self.bot = telebot.TeleBot("6168346014:AAHnrOUzx0gkrD1bvujCh27_8YKgclXWhx4")
+            self.bot = telebot.TeleBot("")
         self.menu = False
         self.autostart = (True, "portal2.exe", "-dev +developer 2") # запускать при старте
         self.ok = "esc"
